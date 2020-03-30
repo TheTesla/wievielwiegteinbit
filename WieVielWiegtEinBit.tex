@@ -1,0 +1,321 @@
+\documentclass[aspectratio=169]{beamer}
+%\documentclass{easytikz}
+
+
+\usepackage{default}
+\usepackage{tikz}
+\usetikzlibrary{positioning,automata,calc}
+\usepackage{multicol}
+\usepackage{svg}
+
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{minibox}
+\usepackage{setspace}
+\usepackage{tabularx}
+\usepackage{units}
+\usepackage{ulem}
+
+
+\usetikzlibrary{shapes.geometric, arrows}
+\usetikzlibrary{positioning}
+
+\newenvironment{conditions}
+{\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}\hspace{0.1cm}.\hspace{0.03cm}.\hspace{0.25cm}{}$} l}}
+	{\end{tabular}\par\vspace{\belowdisplayskip}}
+
+
+\def\doubleunderline#1{\underline{\underline{#1}}}
+
+\title{Wie viel wiegt ein Bit?}
+%\subtitle{}
+\author{Stefan Helmert}
+\institute{entroserv.de}
+\date{03/2020}
+
+\logo{\Large\texttt{\minibox{entroserv\vspace{-.27cm}\\\hspace{0.63cm} course}}}
+
+\tikzset{
+  se/.style={rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30},
+  sed/.style={rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=black!30},
+  io/.style={trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30},
+  op/.style={rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30},
+  cn/.style={diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30},
+  sc/.style={circle, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=blue!30},
+  node distance=7mm
+}
+
+\begin{document}
+	
+\frame{\titlepage}
+
+\section{Was ist Information?}
+\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{tikzpicture}[scale=1.5]
+\draw (0,0) node[fill=white] {Information} -- (-3,3) node[fill=white] {Energie} -- (3,3) node[fill=white] {Materie} -- cycle;
+\end{tikzpicture}
+\end{frame}
+
+\section{Was ist ein Signal?}
+\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+Signal ist:
+\begin{itemize}
+	\item Träger der Information
+	\item physikalische Größe
+\end{itemize}
+\vspace{0.8cm}
+\begin{tikzpicture}[scale=1.0,line width=0.3mm]
+\draw (0,0) --++ (2,0) --++ (0,2.5) --++ (-0.5,0.5) --++ (-1.5,0) -- cycle;
+\draw (2,2.5) --++ (-0.5,0) --++ (0,0.5);
+\node at(0.5,2.5) {\scalebox{3}{A}};
+\end{tikzpicture}
+\hspace{1cm}
+\begin{tikzpicture}[scale=1.5,line width=0.3mm]
+\draw (0,0) --++ (0,1) --++ (0.4,0) --++ (0,-1) -- cycle;
+\draw (0.4,0.25) --++(0.6,-0.5) --++ (0,1.5) --++ (-0.6,-0.5);
+\draw (0,0.5) ++ (20:1.8) arc (20:-20:1.8);
+\draw (0,0.5) ++ (20:2.2) arc (20:-20:2.2);
+\draw (0,0.5) ++ (20:2.6) arc (20:-20:2.6);
+\end{tikzpicture}
+\end{frame}
+
+
+\section{Kanalkapazität}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{equation}
+	\underbrace{C}_{\unit{\frac{bit}{s}}} = \underbrace{B}_{\unit{\frac{symbols}{s}}} \cdot \underbrace{\log_2\left(1 + \frac{S}{N}\right)}_{\unit{\frac{bit}{symbol}}}
+	\label{eq:kanalkap}
+\end{equation}
+\begin{conditions}
+	C & Kanalkapazität \\
+	B & Bandbreite \\   
+	S & Signalleistung \\
+	N & Rauschleistung \\
+	\frac{S}{N} & Signal-Rausch-Verhältnis
+\end{conditions}
+\end{frame}
+
+\section{Informationsgehalt}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{equation}
+	\underbrace{I}_{\unit{bit}} = \underbrace{C}_{\unit{\frac{bit}{s}}} \cdot \underbrace{t}_{\unit{s}}
+	\label{eq:infom}
+\end{equation}
+\begin{conditions}
+	I & Informationsgehalt \\
+	C & Kanalkapazität \\
+	t & Übertragungszeit  
+\end{conditions}
+\end{frame}
+
+
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{flalign}
+(\ref{eq:kanalkap}\rightarrow\ref{eq:infom})&& \underbrace{I}_{\unit{bit}} &= \underbrace{B \cdot t}_{\unit{symbols}} \cdot \underbrace{\log_2\left(1 + \frac{S}{N}\right)}_{\unit{\frac{bit}{symbol}}} &&
+\label{eq:informsnr}
+\end{flalign}
+\begin{conditions}
+	I & Informationsgehalt \\
+	B & Bandbreite \\   
+	t & Übertragungszeit \\
+	S & Signalleistung \\
+	N & Rauschleistung \\
+	\frac{S}{N} & Signal-Rausch-Verhältnis
+\end{conditions}
+\end{frame}
+
+\section{Symbolanzahl}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{flalign}
+(\ref{eq:informsnr}\ \text{umgestellt}) && \underbrace{B \cdot t}_{\unit{symbols}} &= \frac{I}{\log_2\left(1 + \frac{S}{N}\right)} &&
+\label{eq:symbolssnr}
+\end{flalign}
+\begin{conditions}
+	B & Bandbreite \\   
+	t & Übertragungszeit \\
+	I & Informationsgehalt \\
+	S & Signalleistung \\
+	N & Rauschleistung \\
+	\frac{S}{N} & Signal-Rausch-Verhältnis
+\end{conditions}
+\end{frame}
+
+\section{Thermisches Rauschen}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{flalign}
+\underbrace{N}_{\unit{W}} = \underbrace{k_B}_{\frac{\unit{Ws}}{\unit{symbol\cdot K}}} \cdot \underbrace{T}_{\unit{K}} \cdot \underbrace{B}_{\unit{\frac{symbols}{s}}}
+\label{eq:thermalnoise}
+\end{flalign}
+\begin{conditions}
+	N & Rauschleistung \\
+	k_B & Boltzmann-Konstante \\
+	T & Temperatur \\
+	B & Bandbreite \\   
+\end{conditions}
+\end{frame}
+
+\section{Energie und Leistung}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{equation}
+\begin{array}{c @{{}={}} c @{{}\cdot{}} c}
+ \underbrace{E}_{\unit{Ws}} &\underbrace{P}_{\unit{W}} & \underbrace{t}_{\unit{s}}\\
+  E_N & N & t  \\
+  E_S & S & t
+\end{array}
+\label{eq:power}
+\end{equation}
+\begin{conditions}
+	E & Energie \\
+	P & Leistung \\
+	t & Zeit \\
+	E_N & Rauschenergie \\
+	N & Rauschleistung \\
+	E_S & Signalenergie \\
+	S & Signalleistung \\
+\end{conditions}
+\end{frame}
+
+\section{Rauschenergie}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{flalign}
+(\ref{eq:thermalnoise} \rightarrow \ref{eq:power}) &&
+\underbrace{E_N}_{\unit{Ws}} &=  \underbrace{k_B}_{\frac{\unit{Ws}}{\unit{symbol\cdot K}}} \cdot \underbrace{T}_{\unit{K}} \cdot \underbrace{B}_{\unit{\frac{symbols}{s}}} \cdot \underbrace{t}_{\unit{s}} &&
+\label{eq:noiseenergy}
+\end{flalign}
+\begin{conditions}
+	E_N & Rauschenergie \\
+	k_B & Boltzmann-Konstante \\
+	T & Temperatur \\
+	B & Bandbreite \\   
+	t & Übertragungszeit
+\end{conditions}
+\end{frame}
+
+
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{flalign}
+(\ref{eq:symbolssnr} \rightarrow \ref{eq:noiseenergy}) &&
+\underbrace{E_N}_{\unit{Ws}} &= \underbrace{k_B}_{\frac{\unit{Ws}}{\unit{symbol\cdot K}}} \cdot \underbrace{T}_{\unit{K}} \cdot \underbrace{\frac{I}{\log_2\left(1 + \frac{S}{N}\right)}}_{\unit{symbols}} &&
+\label{eq:noiseenergysnr}
+\end{flalign}
+\begin{conditions}
+	E_N & Rauschenergie \\
+	k_B & Boltzmann-Konstante \\
+	T & Temperatur \\
+	I & Informationsgehalt \\
+	S & Signalleistung \\
+	N & Rauschleistung \\ 
+	\frac{S}{N} & Signal-Rausch-Verhältnis
+\end{conditions}
+\end{frame}
+
+\section{Erforderliche Signalenergie}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{equation}
+\underbrace{E_S}_{\unit{Ws}} = \underbrace{\frac{S}{N}}_1 \cdot \underbrace{E_N}_{\unit{Ws}}
+\label{eq:neededsignal}
+\end{equation}
+\begin{conditions}
+	E_S & Signalenergie \\
+	S & Signalleistung \\
+	N & Rauschleistung \\ 
+	\frac{S}{N} & Signal-Rausch-Verhältnis \\
+	E_N & Rauschenergie \\
+\end{conditions}
+\end{frame}
+
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{flalign}
+(\ref{eq:noiseenergysnr} \rightarrow \ref{eq:neededsignal}) && \underbrace{E_S}_{\unit{Ws}} &= \underbrace{\frac{S}{N}}_1 \cdot  \underbrace{k_B}_{\frac{\unit{Ws}}{\unit{symbol\cdot K}}} \cdot \underbrace{T}_{\unit{K}} \cdot \underbrace{\frac{I}{\log_2\left(1 + \frac{S}{N}\right)}}_{\unit{symbols}} &&
+\label{eq:neededsignalsnr}
+\end{flalign}
+\begin{conditions}
+	E_S & Signalenergie \\
+	S & Signalleistung \\
+	N & Rauschleistung \\ 
+	\frac{S}{N} & Signal-Rausch-Verhältnis \\
+	k_B & Boltzmann-Konstante \\
+	T & Temperatur \\
+	I & Informationsgehalt \\
+\end{conditions}
+\end{frame}
+
+\section{Erforderliche Signalenergie nach SNR}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{alignat*}{3}
+\frac{S}{N} & = 1 & \rightarrow E_S & = & 1 & \cdot k_B \cdot T \cdot I \\
+\frac{S}{N} & = 3 & \rightarrow E_S & = & \frac{3}{2} & \cdot k_B \cdot T \cdot I \\ 
+\frac{S}{N} & = 7 & \rightarrow E_S & = & \frac{7}{3} & \cdot k_B \cdot T \cdot I \\
+\frac{S}{N} & = 0{,}001 & \rightarrow E_S & = & \frac{1000}{1442} & \cdot k_B \cdot T \cdot I \\ 
+\frac{S}{N} & = 0{,}000001 & \rightarrow E_S & = & \frac{1000}{1443} & \cdot k_B \cdot T \cdot I 
+\end{alignat*}
+\end{frame}
+
+\section{Energie für ein Bit}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{alignat}{3}
+k_B & = & 1&{,}3806504 \cdot 10^{-23}\ \frac{\text{Ws}}{\text{K}} \\
+T & = & 300 &\ \unit{K}\\
+I & = & 1 &\ \unit{bit}
+\end{alignat}
+\begin{conditions}
+	k_B & Boltzmann-Konstante \\
+	T & Temperatur ($26^\circ$C Umgebungstemperatur)\\
+	I & Informationsgehalt \\
+\end{conditions}
+\end{frame}
+
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{alignat}{3}
+\frac{S}{N} = 0{,}000001 \rightarrow E_S & = \frac{1000}{1443} \cdot 1{,}3806504 \cdot 10^{-23} \frac{\text{Ws}}{\text{K}} \cdot 300 \text{K} \cdot 1 \\
+\makebox[0pt][l]{\uuline{\phantom{$ E_S = 6 \cdot 10^{-21} \text{Ws}$}}}
+ E_S & = 6 \cdot 10^{-21} \text{Ws}
+\end{alignat}
+\end{frame}
+
+\section{Masse}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{equation}
+E = mc^2
+\label{eq:relativ}
+\end{equation}
+\begin{conditions}
+	E & Energie \\
+	m & Masse \\
+	c & Lichtgeschwindigkeit \\
+\end{conditions}
+\end{frame}
+
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{flalign}
+(\ref{eq:relativ}\ \text{umgestellt}) && m &= \frac{E}{c^2} &&
+\end{flalign}
+\begin{conditions}
+	m & Masse \\
+	E & Energie \\
+	c & Lichtgeschwindigkeit \\
+\end{conditions}
+\end{frame}
+
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{alignat}{3}
+c & = & 3 & \cdot 10^{8}\ \unit{\frac{m}{s^2}}  \\
+\end{alignat}
+\begin{conditions}
+	c & Lichtgeschwindigkeit \\
+\end{conditions}
+\end{frame}
+
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+\begin{alignat}{2}
+m_{\unit{bit}} & = \frac{6 \cdot 10^{-21} \text{Ws}}{(3\cdot 10^8 \text{m/s})^2} \\
+\makebox[0pt][l]{\uuline{\phantom{$m_{\unit{bit}} = 6{,}67 \cdot 10^{-38} \text{kg}$}}}
+m_{\unit{bit}} & = 6{,}67 \cdot 10^{-38} \text{kg}
+\end{alignat}
+\end{frame}
+
+\end{document}
