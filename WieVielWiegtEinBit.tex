@@ -7,6 +7,7 @@
 \usetikzlibrary{positioning,automata,calc}
 \usepackage{multicol}
 \usepackage{svg}
+\usepackage{pgfplots}
 
 
 
@@ -23,6 +24,11 @@
 
 \usetikzlibrary{shapes.geometric, arrows}
 \usetikzlibrary{positioning}
+
+\pgfmathdeclarefunction{gauss}{2}{%
+	\pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
 
 \newenvironment{conditions}
 {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}\hspace{0.1cm}.\hspace{0.03cm}.\hspace{0.25cm}{}$} l}}
@@ -81,6 +87,49 @@ Signal ist:
 \draw (0,0.5) ++ (20:2.2) arc (20:-20:2.2);
 \draw (0,0.5) ++ (20:2.6) arc (20:-20:2.6);
 \end{tikzpicture}
+\end{frame}
+
+\section{Was ist Rauschen?}
+\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+
+\begin{tikzpicture}
+\begin{axis}[every axis plot post/.append style={
+	mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
+axis x line*=bottom, % no box around the plot, only x and y axis
+axis y line*=left, % the * suppresses the arrow tips
+enlargelimits=upper] % extend the axes a bit to the right and top
+\addplot {gauss(-1,0.5)};
+\addplot {gauss(1,0.5)};
+\addplot[dashed] coordinates {(0,0) (0,1)};
+\node at (axis cs: -1,1) {0};
+\node at (axis cs: 1,1) {1};
+\end{axis}
+\end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+
+\begin{tikzpicture}
+\begin{axis}[every axis plot post/.append style={
+	mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
+axis x line*=bottom, % no box around the plot, only x and y axis
+axis y line*=left, % the * suppresses the arrow tips
+enlargelimits=upper] % extend the axes a bit to the right and top
+\addplot {gauss(-1,0.5)};
+\addplot {gauss(1,0.5)};
+\addplot {gauss(3,0.5)};
+\addplot {gauss(-3,0.5)};
+\addplot[dashed] coordinates {(0,0) (0,1)};
+\addplot[dashed] coordinates {(-2,0) (-2,1)};
+\addplot[dashed] coordinates {(2,0) (2,1)};
+\node at (axis cs: -1,1) {01};
+\node at (axis cs: 1,1) {11};
+\node at (axis cs: -3,1) {00};
+\node at (axis cs: 3,1) {10};
+\end{axis}
+\end{tikzpicture}
+
 \end{frame}
 
 
@@ -379,7 +428,6 @@ Im Jahr 2290 wird die Software einen maßgeblichen Beitrag an der Gesamtmasse de
 
 \node at (1,-0.8) {\scalebox{8}{?}};
 \end{tikzpicture}
-
 \end{frame}
 
 \end{document}
