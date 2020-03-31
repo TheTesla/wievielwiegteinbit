@@ -41,7 +41,7 @@
 %\subtitle{}
 \author{Stefan Helmert}
 \institute{entroserv.de}
-\date{03/2020}
+\date{04/2020}
 
 \logo{\Large\texttt{\minibox{entroserv\vspace{-.27cm}\\\hspace{0.63cm} course}}}
 
@@ -92,11 +92,39 @@ Signal ist:
 \section{Was ist Rauschen?}
 \begin{frame}[fragile]{\insertsection}{\insertsubsection}
 
+\textbf{AWGN-Kanal (Additive White Gaussian Noise)}
+
+\begin{equation}
+\varphi(x)=\frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\end{equation}
+\begin{conditions}
+	\varphi & Wahrscheinlichkeitsdichte \\
+	x & Auslenkung \\
+	\sigma & Varianz \\   
+	\mu & Erwartungswert \\
+\end{conditions}
+
+\begin{tikzpicture}
+ \node[draw,circle] (plus) at (0,0) {+};
+ \node (sender) at (-3,0) {Sender};
+ \node (noise) at (0,2) {thermisches Rauschen};
+ \node (empfaenger) at (3,0) {Empfänger};
+ \draw[->] (sender) -- (plus);
+ \draw[->] (plus) -- (empfaenger);
+ \draw[->] (noise) -- (plus);
+\end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+
 \begin{tikzpicture}
 \begin{axis}[every axis plot post/.append style={
 	mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
 axis x line*=bottom, % no box around the plot, only x and y axis
 axis y line*=left, % the * suppresses the arrow tips
+xlabel=$x$,
+ylabel=$\varphi(x)$,
 enlargelimits=upper] % extend the axes a bit to the right and top
 \addplot {gauss(-1,0.5)};
 \addplot {gauss(1,0.5)};
@@ -115,6 +143,8 @@ enlargelimits=upper] % extend the axes a bit to the right and top
 	mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
 axis x line*=bottom, % no box around the plot, only x and y axis
 axis y line*=left, % the * suppresses the arrow tips
+xlabel=$x$,
+ylabel=$\varphi(x)$,
 enlargelimits=upper] % extend the axes a bit to the right and top
 \addplot {gauss(-1,0.5)};
 \addplot {gauss(1,0.5)};
@@ -136,7 +166,7 @@ enlargelimits=upper] % extend the axes a bit to the right and top
 \section{Kanalkapazität}
 \centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
 \begin{equation}
-	\underbrace{C}_{\unit{\frac{bit}{s}}} = \underbrace{B}_{\unit{\frac{symbols}{s}}} \cdot \underbrace{\log_2\left(1 + \frac{S}{N}\right)}_{\unit{\frac{bit}{symbol}}}
+	\underbrace{C}_{\unit{\frac{bit}{s}}} = \underbrace{B}_{\unit{\frac{symbols}{s}}} \cdot \underbrace{\log_2\left(1 + \frac{S}{N}\right)}_{\unit{\frac{symbols}{bit}}}
 	\label{eq:kanalkap}
 \end{equation}
 \begin{conditions}
@@ -164,7 +194,7 @@ enlargelimits=upper] % extend the axes a bit to the right and top
 
 \centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
 \begin{flalign}
-(\ref{eq:kanalkap}\rightarrow\ref{eq:infom})&& \underbrace{I}_{\unit{bit}} &= \underbrace{B \cdot t}_{\unit{symbols}} \cdot \underbrace{\log_2\left(1 + \frac{S}{N}\right)}_{\unit{\frac{bit}{symbol}}} &&
+(\ref{eq:kanalkap}\rightarrow\ref{eq:infom})&& \underbrace{I}_{\unit{bit}} &= \underbrace{B \cdot t}_{\unit{symbols}} \cdot \underbrace{\log_2\left(1 + \frac{S}{N}\right)}_{\unit{\frac{symbols}{bit}}} &&
 \label{eq:informsnr}
 \end{flalign}
 \begin{conditions}
@@ -296,18 +326,18 @@ enlargelimits=upper] % extend the axes a bit to the right and top
 \section{Erforderliche Signalenergie nach SNR}
 \centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
 \begin{alignat*}{3}
-\frac{S}{N} & = 1 & \rightarrow E_S & = & 1 & \cdot k_B \cdot T \cdot I \\
-\frac{S}{N} & = 3 & \rightarrow E_S & = & \frac{3}{2} & \cdot k_B \cdot T \cdot I \\ 
-\frac{S}{N} & = 7 & \rightarrow E_S & = & \frac{7}{3} & \cdot k_B \cdot T \cdot I \\
-\frac{S}{N} & = 0{,}001 & \rightarrow E_S & = & \frac{1000}{1442} & \cdot k_B \cdot T \cdot I \\ 
-\frac{S}{N} & = 0{,}000001 & \rightarrow E_S & = & \frac{1000}{1443} & \cdot k_B \cdot T \cdot I 
+\frac{S}{N} & = 1 & \rightarrow E_S & = & 1\ \unit{\frac{symbols}{bit}}& \cdot k_B \cdot T \cdot I \\
+\frac{S}{N} & = 3 & \rightarrow E_S & = & \frac{3}{2}\ \unit{\frac{symbols}{bit}}& \cdot k_B \cdot T \cdot I \\ 
+\frac{S}{N} & = 7 & \rightarrow E_S & = & \frac{7}{3}\ \unit{\frac{symbols}{bit}}& \cdot k_B \cdot T \cdot I \\
+\frac{S}{N} & = 0{,}001 & \rightarrow E_S & \approx & \frac{1000}{1442}\ \unit{\frac{symbols}{bit}}& \cdot k_B \cdot T \cdot I \\ 
+\frac{S}{N} & = 0{,}000001 & \rightarrow E_S & \approx & \frac{1000}{1443}\ \unit{\frac{symbols}{bit}}& \cdot k_B \cdot T \cdot I 
 \end{alignat*}
 \end{frame}
 
 \section{Energie für ein Bit}
 \centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
 \begin{alignat}{3}
-k_B & = & 1&{,}3806504 \cdot 10^{-23}\ \frac{\unit{Ws}}{\unit{symbol\cdot K}} \\
+k_B & \approx & 1&{,}3806504 \cdot 10^{-23}\ \frac{\unit{Ws}}{\unit{symbol\cdot K}} \\
 T & = & 300 &\ \unit{K}\\
 I & = & 1 &\ \unit{bit}
 \end{alignat}
@@ -320,9 +350,10 @@ I & = & 1 &\ \unit{bit}
 
 \centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
 \begin{alignat}{3}
-\frac{S}{N} = 0{,}000001 \rightarrow E_S & = \frac{1000}{1443} \cdot 1{,}3806504 \cdot 10^{-23}\ \frac{\unit{Ws}}{\unit{K}} \cdot 300\ \unit{K} \cdot 1 \\
-\makebox[0pt][l]{\uuline{\phantom{$ E_S = 6 \cdot 10^{-21}\ \unit{Ws}$}}}
- E_S & = 6 \cdot 10^{-21}\ \unit{Ws}
+\frac{S}{N} &= 0{,}000001 \\
+E_S & \approx \frac{1000}{1443}\ \unit{\frac{symbols}{bit}}\cdot 1{,}3806504 \cdot 10^{-23}\ \frac{\unit{Ws}}{\unit{symbol\cdot K}} \cdot 300\ \unit{K} \cdot 1\ \unit{bit}\\
+\makebox[0pt][l]{\uuline{\phantom{$ E_S \approx 6 \cdot 10^{-21}\ \unit{Ws}$}}}
+ E_S & \approx 6 \cdot 10^{-21}\ \unit{Ws}
 \end{alignat}
 \end{frame}
 
@@ -352,18 +383,18 @@ E = mc^2
 
 \centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
 \begin{alignat}{3}
-c & = & 3 & \cdot 10^{8}\ \unit{\frac{m}{s}}  \\
+c & \approx & 3 & \cdot 10^{8}\ \unit{\frac{m}{s}}
 \end{alignat}
 \begin{conditions}
-	c & Lichtgeschwindigkeit \\
+	c & Lichtgeschwindigkeit
 \end{conditions}
 \end{frame}
 
 \centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
 \begin{alignat}{2}
-m_{\unit{bit}} & = \frac{6 \cdot 10^{-21}\ \unit{Ws}}{(3\cdot 10^8\ \unit{\frac{m}{s}})^2} \\
-\makebox[0pt][l]{\uuline{\phantom{$m_{\unit{bit}} = 6{,}67 \cdot 10^{-38}\ \unit{kg}$}}}
-m_{\unit{bit}} & = 6{,}67 \cdot 10^{-38}\ \unit{kg}
+m_{\unit{bit}} & \approx \frac{6 \cdot 10^{-21}\ \unit{Ws}}{(3\cdot 10^8\ \unit{\frac{m}{s}})^2} \\
+\makebox[0pt][l]{\uuline{\phantom{$m_{\unit{bit}} \approx 6{,}67 \cdot 10^{-38}\ \unit{kg}$}}}
+m_{\unit{bit}} & \approx 6{,}67 \cdot 10^{-38}\ \unit{kg}
 \end{alignat}
 \end{frame}
 
@@ -371,11 +402,11 @@ m_{\unit{bit}} & = 6{,}67 \cdot 10^{-38}\ \unit{kg}
 \centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
 "`Der Speicherbedarf von Software verzehnfacht sich alle zehn Jahre."'
 \begin{alignat}{2}
-I_{Androidupdate,\ Jahr\ 2020} & =  1  \cdot 10^{10}\ \unit{bit}  \\
-I_{Androidupdate,\ Jahr\ 2290} & =  1  \cdot 10^{37}\ \unit{bit}  \\
-m_{Androidupdate,\ Jahr\ 2290} & =  6{,}67  \cdot 10^{-38}\ \unit{\frac{kg}{bit}} \cdot 1 \cdot 10^{37}\ \unit{bit}  \\
-\makebox[0pt][l]{\uuline{\phantom{$m_{Androidupdate,\ Jahr\ 2290} =  667\ \unit{g}$}}}
-m_{Androidupdate,\ Jahr\ 2290} & =  667\ \unit{g}    \\
+I_{Androidupdate,\ Jahr\ 2020} & \approx  1  \cdot 10^{10}\ \unit{bit}  \\
+I_{Androidupdate,\ Jahr\ 2290} & \approx  1  \cdot 10^{37}\ \unit{bit}  \\
+m_{Androidupdate,\ Jahr\ 2290} & \approx  6{,}67  \cdot 10^{-38}\ \unit{\frac{kg}{bit}} \cdot 1 \cdot 10^{37}\ \unit{bit}  \\
+\makebox[0pt][l]{\uuline{\phantom{$m_{Androidupdate,\ Jahr\ 2290} \approx  667\ \unit{g}$}}}
+m_{Androidupdate,\ Jahr\ 2290} & \approx  667\ \unit{g}
 \end{alignat}
 \end{frame}
 
@@ -428,6 +459,13 @@ Im Jahr 2290 wird die Software einen maßgeblichen Beitrag an der Gesamtmasse de
 
 \node at (1,-0.8) {\scalebox{8}{?}};
 \end{tikzpicture}
+\end{frame}
+
+\section{Energie und Masse gespeicherter Information}
+\centering\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+Das gilt für die Informationsübertragung.
+
+Aber gilt das auch für gespeicherte Information?
 \end{frame}
 
 \end{document}
