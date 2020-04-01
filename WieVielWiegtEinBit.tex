@@ -20,7 +20,7 @@
 \usepackage{tabularx}
 \usepackage{units}
 \usepackage{ulem}
-
+\usepackage{multicol}
 
 \usetikzlibrary{shapes.geometric, arrows}
 \usetikzlibrary{positioning}
@@ -117,14 +117,14 @@ Signal ist:
 \end{frame}
 
 \begin{frame}[fragile]{\insertsection}{\insertsubsection}
-
-\begin{tikzpicture}
+\begin{multicols}{2}
+\begin{tikzpicture}[scale=0.85]
 \begin{axis}[every axis plot post/.append style={
 	mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
 axis x line*=bottom, % no box around the plot, only x and y axis
 axis y line*=left, % the * suppresses the arrow tips
 xlabel=$x$,
-ylabel=$\varphi(x)$,
+ylabel=$\varphi_{X=1}(x)$,
 enlargelimits=upper] % extend the axes a bit to the right and top
 \addplot {gauss(-1,0.5)};
 \addplot {gauss(1,0.5)};
@@ -133,18 +133,35 @@ enlargelimits=upper] % extend the axes a bit to the right and top
 \node at (axis cs: 1,1) {1};
 \end{axis}
 \end{tikzpicture}
-
-\end{frame}
-
-\begin{frame}[fragile]{\insertsection}{\insertsubsection}
-
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.85]
 \begin{axis}[every axis plot post/.append style={
 	mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
 axis x line*=bottom, % no box around the plot, only x and y axis
 axis y line*=left, % the * suppresses the arrow tips
 xlabel=$x$,
-ylabel=$\varphi(x)$,
+ylabel=$\varphi_{X=\nicefrac{1}{2}}(x)$,
+enlargelimits=upper] % extend the axes a bit to the right and top
+\addplot {gauss(-0.5,0.5)};
+\addplot {gauss(0.5,0.5)};
+\addplot[dashed] coordinates {(0,0) (0,1)};
+\node at (axis cs: -1,1) {0};
+\node at (axis cs: 1,1) {1};
+\end{axis}
+\end{tikzpicture}
+\end{multicols}
+
+\end{frame}
+
+\begin{frame}[fragile]{\insertsection}{\insertsubsection}
+
+\begin{multicols}{2}
+\begin{tikzpicture}[scale=0.85]
+\begin{axis}[every axis plot post/.append style={
+	mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
+axis x line*=bottom, % no box around the plot, only x and y axis
+axis y line*=left, % the * suppresses the arrow tips
+xlabel=$x$,
+ylabel=$\varphi_{X=3}(x)$,
 enlargelimits=upper] % extend the axes a bit to the right and top
 \addplot {gauss(-1,0.5)};
 \addplot {gauss(1,0.5)};
@@ -159,7 +176,28 @@ enlargelimits=upper] % extend the axes a bit to the right and top
 \node at (axis cs: 3,1) {10};
 \end{axis}
 \end{tikzpicture}
-
+\begin{tikzpicture}[scale=0.85]
+\begin{axis}[every axis plot post/.append style={
+	mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
+axis x line*=bottom, % no box around the plot, only x and y axis
+axis y line*=left, % the * suppresses the arrow tips
+xlabel=$x$,
+ylabel=$\varphi_{X=\nicefrac{3}{2}}(x)$,
+enlargelimits=upper] % extend the axes a bit to the right and top
+\addplot {gauss(-0.5,0.5)};
+\addplot {gauss(0.5,0.5)};
+\addplot {gauss(1.5,0.5)};
+\addplot {gauss(-1.5,0.5)};
+\addplot[dashed] coordinates {(0,0) (0,1)};
+\addplot[dashed] coordinates {(-1,0) (-1,1)};
+\addplot[dashed] coordinates {(1,0) (1,1)};
+\node at (axis cs: -0.5,1) {01};
+\node at (axis cs: 0.5,1) {11};
+\node at (axis cs: -1.5,1) {00};
+\node at (axis cs: 1.5,1) {10};
+\end{axis}
+\end{tikzpicture}
+\end{multicols}
 \end{frame}
 
 
